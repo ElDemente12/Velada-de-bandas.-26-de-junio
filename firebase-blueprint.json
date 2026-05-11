@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "Band": {
+      "title": "Band",
+      "description": "A musical group participating in the musical combat.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "city": { "type": "string" },
+        "style": { "type": "string" },
+        "bio": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "power": { "type": "number" },
+            "attitude": { "type": "number" },
+            "sound": { "type": "number" }
+          }
+        }
+      },
+      "required": ["name", "city", "style", "bio"]
+    },
+    "Vote": {
+      "title": "Vote",
+      "description": "A vote cast by a user for a specific band.",
+      "type": "object",
+      "properties": {
+        "bandId": { "type": "string" },
+        "voterId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["bandId", "voterId", "timestamp"]
+    },
+    "GlobalSettings": {
+      "title": "Global Settings",
+      "description": "Global configuration for the voting session.",
+      "type": "object",
+      "properties": {
+        "isVotingOpen": { "type": "boolean" },
+        "eventTitle": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "bands/{bandId}": {
+      "schema": "Band",
+      "description": "Collection of bands competing in the event."
+    },
+    "votes/{voteId}": {
+      "schema": "Vote",
+      "description": "Collection of all cast votes."
+    },
+    "settings/global": {
+      "schema": "GlobalSettings",
+      "description": "Global settings for the application."
+    }
+  }
+}
