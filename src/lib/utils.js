@@ -1,8 +1,7 @@
 import { auth } from './firebase';
-import { OperationType, FirestoreErrorInfo } from '../types';
 
-export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
-  const errInfo: FirestoreErrorInfo = {
+export function handleFirestoreError(error, operationType, path) {
+  const errInfo = {
     error: error instanceof Error ? error.message : String(error),
     authInfo: {
       userId: auth.currentUser?.uid,

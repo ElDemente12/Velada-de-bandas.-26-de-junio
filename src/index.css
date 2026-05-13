@@ -5,24 +5,26 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", sans-serif;
   
-  --color-fighting-red: #dc2626;
-  --color-fighting-black: #0a0a0a;
-  --color-fighting-zinc-900: #18181b;
-  --color-fighting-zinc-800: #27272a;
+  --color-rosa: #E6649C;
+  --color-amarillo: #F2BC41;
+  --color-verde: #0D4D33;
+  --color-gris-oscuro: #222223;
+  --color-gris-mas-oscuro: #1A1A1B;
+  --color-crema: #FFF9E6;
 }
 
 @layer base {
   body {
-    @apply bg-fighting-black text-zinc-100 font-sans antialiased;
+    @apply bg-gris-mas-oscuro text-crema font-sans antialiased;
   }
 }
 
 .immersive-border {
-  border: 8px solid theme('colors.red.950');
+  border: 8px solid theme('colors.verde');
 }
 
 .title-glow {
-  text-shadow: 0 0 30px rgba(220, 38, 38, 0.4);
+  text-shadow: 0 0 30px rgba(230, 100, 156, 0.4);
 }
 
 .scanline {
@@ -33,7 +35,7 @@
   ),
   linear-gradient(
     90deg,
-    rgba(220, 38, 38, 0.03),
+    rgba(230, 100, 156, 0.03),
     rgba(0, 255, 0, 0.01),
     rgba(0, 0, 255, 0.03)
   );
@@ -42,5 +44,5 @@
 }
 
 .ring-glow {
-  background: radial-gradient(circle at 50% 50%, rgba(153, 27, 27, 0.15), transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(230, 100, 156, 0.15), transparent 70%);
 }

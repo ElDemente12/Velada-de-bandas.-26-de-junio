@@ -1,8 +1,7 @@
-import { collection, doc, getDocs, setDoc, Timestamp, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, getDocs, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { Band } from '../types';
 
-const INITIAL_BANDS: Band[] = [
+const INITIAL_BANDS = [
   {
     id: 'anastasia-general',
     name: 'Anastasia General',
@@ -52,7 +51,7 @@ export async function seedInitialData() {
     console.log('Setting global settings');
     await setDoc(settingsRef, {
       isVotingOpen: true,
-      eventTitle: 'LA VELADA DE BANDAS: COMBATE MUSICAL'
+      eventTitle: 'tortillas de patadas: combate musical'
     }, { merge: true });
   } catch (e) {
     console.error('Could not seed settings:', e);
