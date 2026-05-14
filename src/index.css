@@ -1,9 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", sans-serif;
+  --font-8bit: "Press Start 2P", monospace;
+  --font-8bit-secondary: "Pixelify Sans", monospace;
   
   --color-rosa: #E6649C;
   --color-amarillo: #F2BC41;
@@ -16,6 +18,60 @@
 @layer base {
   body {
     @apply bg-gris-mas-oscuro text-crema font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .arcade-glow-rosa {
+    box-shadow: 0 0 5px #E6649C, 0 0 15px #E6649C, 0 0 30px rgba(230, 100, 156, 0.3);
+  }
+  .arcade-glow-amarillo {
+    box-shadow: 0 0 5px #F2BC41, 0 0 15px #F2BC41, 0 0 30px rgba(242, 188, 65, 0.3);
+  }
+  .arcade-glow-verde {
+    box-shadow: 0 0 5px #0D4D33, 0 0 15px #0D4D33, 0 0 30px rgba(13, 77, 51, 0.3);
+  }
+  .arcade-double-outline {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+  .arcade-double-outline-rosa {
+    outline: 3px solid #E6649C;
+    outline-offset: 3px;
+  }
+  .arcade-double-outline-amarillo {
+    outline: 3px solid #F2BC41;
+    outline-offset: 3px;
+  }
+  .arcade-text-shadow {
+    text-shadow:
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      3px 3px 0 #000,
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000;
+  }
+  .arcade-text-shadow-sm {
+    text-shadow:
+      0 0 5px currentColor,
+      2px 2px 0 #000;
+  }
+  .arcade-scanline {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.15) 4px
+    );
+    pointer-events: none;
+  }
+  .arcade-grid-bg {
+    background-image:
+      linear-gradient(rgba(230, 100, 156, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(230, 100, 156, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
 }
 
