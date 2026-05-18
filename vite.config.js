@@ -22,6 +22,12 @@ export default defineConfig(({ mode }) => {
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
       allowedHosts: ['semiwild-semisolemnly-sanjuana.ngrok-free.dev'],
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5005',
+          changeOrigin: true,
+        },
+      },
     },
   };
 });
