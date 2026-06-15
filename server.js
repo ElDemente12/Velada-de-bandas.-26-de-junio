@@ -64,8 +64,8 @@ async function writeDb(data) {
 }
 
 // Admin authorization middleware
-const adminUser = process.env.VITE_ADMIN_USER || 'ElDemente12';
-const adminPass = process.env.VITE_ADMIN_PASS || 'VeladaDelaTortillaDePatadasñ1';
+const adminUser = process.env.VITE_ADMIN_USER;
+const adminPass = process.env.VITE_ADMIN_PASS;
 
 function adminAuth(req, res, next) {
   const user = req.headers['x-admin-user'];

@@ -41,25 +41,19 @@ function StatBar({ label, value, color = 'rosa' }) {
 
 export default function ContendientesPage() {
   const [currentBandIndex, setCurrentBandIndex] = useState(0);
-  const [prevBandIndex, setPrevBandIndex] = useState(0);
   const [selectedMember, setSelectedMember] = useState(null);
   const [imgErrors, setImgErrors] = useState({});
+  const [flashKey, setFlashKey] = useState(0);
+  const [waveKey, setWaveKey] = useState(0);
+  const [waveOrigin, setWaveOrigin] = useState({ x: 132.29, y: 132.29 });
+  const [glitchHitId, setGlitchHitId] = useState(null);
 
   const currentBand = bands[currentBandIndex];
-  const direction = currentBandIndex >= prevBandIndex ? 1 : -1;
-  const slideDistance = Math.abs(currentBandIndex - prevBandIndex) * 400 || 400;
 
   const handleBandChange = (index) => {
     if (index === currentBandIndex) return;
-    setPrevBandIndex(currentBandIndex);
     setCurrentBandIndex(index);
     setSelectedMember(null);
-  };
-
-  const slideVariants = {
-    enter: (d) => ({ x: d * slideDistance, opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (d) => ({ x: d * -slideDistance, opacity: 0 }),
   };
 
   return (
@@ -119,18 +113,16 @@ export default function ContendientesPage() {
       </p>
 
       {/* Carrusel con marco SF2 Character Select */}
-      <div className="max-w-4xl mx-auto mb-16">
+      <div className="w-fit max-w-4xl mx-auto mb-16">
         <ArcadeBorder color="rosa" animated={true} title={currentBand.name}>
-          <div className="relative bg-black min-h-[300px] md:min-h-[400px]">
-            <AnimatePresence custom={direction}>
+          <div className="relative bg-black min-h-[55vh]">
+            <AnimatePresence mode="wait">
               <motion.div
                 key={currentBand.id}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.45, ease: 'easeInOut' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
               >
                 {imgErrors[currentBand.id] ? (
                   <div className="flex items-center justify-center min-h-[300px] md:min-h-[400px] bg-gradient-to-br from-zinc-900 to-zinc-800">
@@ -144,32 +136,140 @@ export default function ContendientesPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="relative">
-                    <img
-                      src={currentBand.image}
-                      alt={currentBand.name}
-                      className="w-full h-auto [image-rendering:pixelated]"
-                      onError={() => setImgErrors((prev) => ({ ...prev, [currentBand.id]: true }))}
-                    />
-                    <div className="absolute inset-0">
-                      {currentBand.members.map((member) => (
-                        <button
-                          key={member.id}
-                          className="absolute border-2 border-transparent hover:border-rosa/70 hover:bg-rosa/15 transition-all cursor-pointer"
-                          style={{
-                            left: `${member.coords.x}%`,
-                            top: `${member.coords.y}%`,
-                            width: `${member.coords.w}%`,
-                            height: `${member.coords.h}%`,
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedMember(member);
-                          }}
-                          title={member.name}
-                        />
-                      ))}
-                    </div>
+                  <div className="relative mx-auto w-fit">
+                    {(() => {
+                      const hasActiveSvg = selectedMember?.svgPath;
+                      const clipId = `clip-active-${currentBand.id}`;
+                      return (
+                        <>
+                          {/* Base image — blurred/darkened when a member is focused */}
+                          <img
+                            src={currentBand.image}
+                            alt={currentBand.name}
+                            className="max-h-[55vh] w-auto max-w-full [image-rendering:pixelated] block"
+                            style={{ filter: hasActiveSvg ? 'blur(4px) brightness(0.4)' : 'none', transition: 'filter 0.3s ease' }}
+                            onError={() => setImgErrors((prev) => ({ ...prev, [currentBand.id]: true }))}
+                          />
+
+                          {/* SVG overlay — same coordinate space as the viewBox — handles both the sharp clip and the glitch borders */}
+                          <svg
+                            viewBox="0 0 264.58333 264.58333"
+                            className="absolute inset-0 w-full h-full z-10 overflow-visible"
+                            preserveAspectRatio="none"
+                          >
+                            <defs>
+                              {hasActiveSvg && (
+                                <clipPath id={clipId} clipPathUnits="userSpaceOnUse">
+                                  <path d={selectedMember.svgPath} />
+                                </clipPath>
+                              )}
+                            </defs>
+
+                            {/* Sharp version of the band photo, clipped to the selected member */}
+                            {hasActiveSvg && (
+                              <image
+                                href={currentBand.image}
+                                x="0" y="0"
+                                width="264.58333" height="264.58333"
+                                preserveAspectRatio="none"
+                                clipPath={`url(#${clipId})`}
+                              />
+                            )}
+
+                            {/* Glitch borders for each member */}
+                            {currentBand.members.filter(m => m.svgPath).map(member => {
+                              const isActive = selectedMember?.id === member.id;
+                              return (
+                                <g
+                                  key={`svg-${member.id}`}
+                                  className={`path-group ${isActive ? 'is-active' : ''} ${glitchHitId === member.id ? 'glitch-hit' : ''}`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const isDeselect = selectedMember?.id === member.id;
+                                    setSelectedMember(prev => prev?.id === member.id ? null : member);
+                                    if (!isDeselect) {
+                                      setFlashKey(prev => prev + 1);
+                                      setWaveKey(prev => prev + 1);
+                                      const coords = member.coords;
+                                      setWaveOrigin(coords
+                                        ? {
+                                            x: ((coords.x + coords.w / 2) / 100) * 264.58333,
+                                            y: ((coords.y + coords.h / 2) / 100) * 264.58333,
+                                          }
+                                        : { x: 132.29, y: 132.29 }
+                                      );
+                                      setGlitchHitId(member.id);
+                                      setTimeout(() => setGlitchHitId(null), 400);
+                                    }
+                                  }}
+                                >
+                                  <title>{member.name}</title>
+                                  <path d={member.svgPath} className="glitch-cyan" />
+                                  <path d={member.svgPath} className="glitch-magenta" />
+                                  <path d={member.svgPath} className="glitch-center" />
+                                  {/* Fat invisible hit area */}
+                                  <path d={member.svgPath} style={{ fill: 'rgba(0,0,0,0)', stroke: 'rgba(0,0,0,0)', strokeWidth: 15 }} />
+                                </g>
+                              );
+                            })}
+
+                            {/* Rectangular overlay for members without svgPath */}
+                            {currentBand.members.filter(m => !m.svgPath).map((member) => (
+                              <foreignObject
+                                key={member.id}
+                                x={`${member.coords.x}%`}
+                                y={`${member.coords.y}%`}
+                                width={`${member.coords.w}%`}
+                                height={`${member.coords.h}%`}
+                              >
+                                <div
+                                  className="w-full h-full border-2 border-transparent hover:border-rosa/70 hover:bg-rosa/15 transition-all cursor-pointer"
+                                  onClick={(e) => { e.stopPropagation(); setSelectedMember(member); }}
+                                />
+                              </foreignObject>
+                            ))}
+
+                            {/* LOCKED ON — Anillos de onda expansiva */}
+                            {waveKey > 0 && selectedMember && (
+                              <g key={`wave-${waveKey}`}>
+                                {[0, 1, 2].map(i => (
+                                  <motion.circle
+                                    key={i}
+                                    cx={waveOrigin.x}
+                                    cy={waveOrigin.y}
+                                    r={3}
+                                    fill="none"
+                                    stroke={i === 0 ? '#00ffff' : i === 1 ? '#ff00ff' : '#E6649C'}
+                                    strokeWidth={i === 2 ? 1.5 : 2.5}
+                                    initial={{ r: 3, opacity: 0.8 }}
+                                    animate={{ r: 170, opacity: 0 }}
+                                    transition={{
+                                      duration: 0.65 - i * 0.05,
+                                      ease: 'easeOut',
+                                      delay: i * 0.08,
+                                    }}
+                                  />
+                                ))}
+                              </g>
+                            )}
+
+                            {/* POWER SURGE — Flash blanco al seleccionar */}
+                            {flashKey > 0 && (
+                              <motion.rect
+                                key={flashKey}
+                                x="0" y="0"
+                                width="264.58333" height="264.58333"
+                                fill="white"
+                                initial={{ opacity: 0.85 }}
+                                animate={{ opacity: 0 }}
+                                transition={{ duration: 0.15, ease: 'easeOut' }}
+                                style={{ pointerEvents: 'none' }}
+                              />
+                            )}
+                          </svg>
+                        </>
+                      );
+                    })()}
                   </div>
                 )}
               </motion.div>

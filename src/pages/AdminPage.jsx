@@ -155,20 +155,19 @@ export function AdminDashboardPage() {
 
     init();
 
-    // 3-second polling interval for real-time admin statistics updates
-    const interval = setInterval(async () => {
-      try {
-        const settingsData = await getSettings();
-        setIsVotingOpen(settingsData.isVotingOpen);
-
-        const resultsData = await adminGetResults();
-        setResults(resultsData.results);
-      } catch (err) {
-        console.error('Polling error:', err);
+    const handleStorageChange = (e) => {
+      if (e.key === 'app_settings' && e.newValue) {
+        try {
+          const settings = JSON.parse(e.newValue);
+          setIsVotingOpen(settings.isVotingOpen);
+        } catch {}
       }
-    }, 3000);
-
-    return () => clearInterval(interval);
+      if (e.key === 'app_votes' || e.key === 'app_bands') {
+        adminGetResults().then(r => setResults(r.results)).catch(() => {});
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const handleLogout = () => {

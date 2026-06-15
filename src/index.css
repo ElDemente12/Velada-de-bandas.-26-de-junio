@@ -102,3 +102,80 @@
 .ring-glow {
   background: radial-gradient(circle at 50% 50%, rgba(230, 100, 156, 0.15), transparent 70%);
 }
+
+.path-group {
+  cursor: pointer;
+  outline: none;
+}
+
+.path-group path {
+  fill: transparent;
+  stroke: transparent;
+}
+
+.path-group:hover .glitch-cyan,
+.path-group.is-active .glitch-cyan {
+  stroke: #f7bd30;
+  stroke-width: 4px;
+  filter: blur(5px);
+  animation: anim-cyan 0.15s infinite linear alternate-reverse;
+}
+
+.path-group:hover .glitch-magenta,
+.path-group.is-active .glitch-magenta {
+  stroke: #f0f;
+  stroke-width: 4px;
+  filter: blur(5px);
+  animation: anim-magenta 0.15s infinite linear alternate-reverse;
+}
+
+.path-group:hover .glitch-center,
+.path-group.is-active .glitch-center {
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 2px;
+}
+
+@keyframes anim-cyan {
+  0% { transform: translate(3px, 0px); }
+  33% { transform: translate(-2px, 2px); }
+  66% { transform: translate(2px, -3px); }
+  100% { transform: translate(-1px, 3px); }
+}
+
+@keyframes anim-magenta {
+  0% { transform: translate(-3px, 0px); }
+  33% { transform: translate(2px, -2px); }
+  66% { transform: translate(-2px, 3px); }
+  100% { transform: translate(1px, -3px); }
+}
+
+/* ERROR DE SISTEMA — violent shake on click */
+@keyframes glitch-hit-cyan {
+  0%   { transform: translate(0, 0); stroke-width: 4px; filter: blur(5px); }
+  12%  { transform: translate(-20px, 14px); stroke-width: 12px; filter: blur(1px); }
+  25%  { transform: translate(16px, -12px); stroke-width: 8px; filter: blur(2px); }
+  37%  { transform: translate(-14px, 16px); stroke-width: 10px; filter: blur(1px); }
+  50%  { transform: translate(10px, -8px); stroke-width: 6px; filter: blur(3px); }
+  62%  { transform: translate(-8px, 10px); stroke-width: 5px; filter: blur(4px); }
+  75%  { transform: translate(6px, -6px); stroke-width: 4px; filter: blur(5px); }
+  100% { transform: translate(0, 0); stroke-width: 4px; filter: blur(5px); }
+}
+
+@keyframes glitch-hit-magenta {
+  0%   { transform: translate(0, 0); stroke-width: 4px; filter: blur(5px); }
+  12%  { transform: translate(18px, -16px); stroke-width: 10px; filter: blur(1px); }
+  25%  { transform: translate(-20px, 14px); stroke-width: 12px; filter: blur(2px); }
+  37%  { transform: translate(16px, -18px); stroke-width: 8px; filter: blur(1px); }
+  50%  { transform: translate(-12px, 12px); stroke-width: 6px; filter: blur(3px); }
+  62%  { transform: translate(10px, -8px); stroke-width: 5px; filter: blur(4px); }
+  75%  { transform: translate(-6px, 6px); stroke-width: 4px; filter: blur(5px); }
+  100% { transform: translate(0, 0); stroke-width: 4px; filter: blur(5px); }
+}
+
+.path-group.glitch-hit .glitch-cyan {
+  animation: glitch-hit-cyan 0.4s ease-out forwards;
+}
+
+.path-group.glitch-hit .glitch-magenta {
+  animation: glitch-hit-magenta 0.4s ease-out forwards;
+}

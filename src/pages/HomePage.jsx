@@ -38,17 +38,16 @@ export default function HomePage() {
 
     init();
 
-    // Poll settings every 4 seconds to listen for real-time ring state updates
-    const interval = setInterval(async () => {
-      try {
-        const settingsData = await getSettings();
-        setIsVotingOpen(settingsData.isVotingOpen);
-      } catch (err) {
-        console.error('Polling error:', err);
+    const handleStorageChange = (e) => {
+      if (e.key === 'app_settings' && e.newValue) {
+        try {
+          const settings = JSON.parse(e.newValue);
+          setIsVotingOpen(settings.isVotingOpen);
+        } catch {}
       }
-    }, 4000);
-
-    return () => clearInterval(interval);
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   useEffect(() => {
