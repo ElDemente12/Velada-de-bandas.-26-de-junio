@@ -46,7 +46,7 @@ export function FighterCard({ band, isSelected, onSelect, votes }) {
             <div className="w-32 h-1 bg-gris-oscuro rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
-                animate={{ width: `${band.stats.power * 10}%` }}
+                animate={{ width: `${band.powerLevel * 10}%` }}
                 className="h-full bg-rosa"
               />
             </div>

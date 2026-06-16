@@ -24,27 +24,30 @@ async function readDb() {
           name: "Anastasia General",
           city: "Murcia",
           style: "Electro-Punk Combat",
-          bio: "Desde las alcantarillas de Murcia, Anastasia trae el ruido que no pediste pero que necesitas. Punk sintético con sabor a asfalto y actitud de combate.",
-          imageUrl: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
-          stats: { power: 8, attitude: 9, sound: 7 }
+          bio: "Punk para patos y demás bichos raros. Anastasia General lleva el caos con título propio: energía sin filtro, canciones que aprietan y un SIXPAK que no se digiere fácil.",
+          imageUrl: "/images/Directo/AnastasiaDirecto.jpeg",
+          powerLevel: 7.1,
+          stats: { power: 8.1, attitude: 6.3, sound: 7.1 }
         },
         {
           id: "regular-crowd",
           name: "Regular Crowd",
           city: "Barcelona",
           style: "Indie Pop Nostálgico",
-          bio: "Melodías agridulces y ritmos de batería vibrantes. Regular Crowd escribe himnos para bailar llorando en la pista de baile de cualquier club indie.",
-          imageUrl: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&q=80&w=800",
-          stats: { power: 6, attitude: 7, sound: 9 }
+          bio: "Cien por cien actitud, cero por ciento técnica. Regular Crowd no pide disculpas: indie punk murciano que te deja el HURACÁN dentro y las excusas fuera.",
+          imageUrl: "/images/Directo/RegularDirecto.JPG",
+          powerLevel: 6.2,
+          stats: { power: 7.9, attitude: 7.6, sound: 6.2 }
         },
         {
           id: "carajo-baby",
           name: "Carajo Baby",
           city: "Madrid",
           style: "Garaje Rock Sucio",
-          bio: "Tres acordes, distorsión al máximo y letras gritadas al micrófono. Carajo Baby recupera el sonido primitivo del garaje de los sesenta con un toque moderno y macarra.",
-          imageUrl: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=800",
-          stats: { power: 9, attitude: 8, sound: 6 }
+          bio: "Si parpadeas te lo pierdes, y con Carajo Baby no te puedes permitir eso. Indie con las tripas a la vista, canciones que van de la cuchara al engaño sin pedir permiso.",
+          imageUrl: "/images/Directo/CarajoDirecto.jpeg",
+          powerLevel: 8.1,
+          stats: { power: 8.0, attitude: 8.4, sound: 8.1 }
         }
       ],
       settings: {

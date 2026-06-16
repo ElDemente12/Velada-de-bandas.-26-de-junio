@@ -1,3 +1,41 @@
+import anastasiaDirecto from '../images/Directo/AnastasiaDirecto.jpeg';
+import regularDirecto from '../images/Directo/RegularDirecto.JPG';
+import carajoDirecto from '../images/Directo/CarajoDirecto.jpeg';
+import { bands as membersData } from '../data/contendientes';
+
+function computeBandStats(bandId) {
+  const band = membersData.find(b => b.id === bandId);
+  if (!band || !band.members.length) return { power: 5, attitude: 5, sound: 5, powerLevel: 5 };
+
+  const count = band.members.length;
+  const sum = band.members.reduce((acc, m) => ({
+    poder: acc.poder + m.stats.poder,
+    velocidad: acc.velocidad + m.stats.velocidad,
+    puestaEnEscena: acc.puestaEnEscena + m.stats.puestaEnEscena,
+    resistencia: acc.resistencia + m.stats.resistencia,
+    tecnica: acc.tecnica + m.stats.tecnica,
+  }), { poder: 0, velocidad: 0, puestaEnEscena: 0, resistencia: 0, tecnica: 0 });
+
+  const avg = {
+    poder: sum.poder / count,
+    velocidad: sum.velocidad / count,
+    puestaEnEscena: sum.puestaEnEscena / count,
+    resistencia: sum.resistencia / count,
+    tecnica: sum.tecnica / count,
+  };
+
+  const powerLevel = (avg.poder + avg.velocidad + avg.puestaEnEscena + avg.resistencia + avg.tecnica) / 5 / 10;
+
+  return {
+    powerLevel: Math.round(powerLevel * 10) / 10,
+    stats: {
+      power: Math.round(((avg.poder + avg.velocidad) / 2 / 10) * 10) / 10,
+      attitude: Math.round(((avg.puestaEnEscena + avg.resistencia) / 2 / 10) * 10) / 10,
+      sound: Math.round(powerLevel * 10) / 10,
+    },
+  };
+}
+
 const STORAGE_KEYS = {
   BANDS: 'app_bands',
   SETTINGS: 'app_settings',
@@ -11,27 +49,27 @@ const DEFAULT_BANDS = [
     name: "Anastasia General",
     city: "Murcia",
     style: "Electro-Punk Combat",
-    bio: "Desde las alcantarillas de Murcia, Anastasia trae el ruido que no pediste pero que necesitas. Punk sintético con sabor a asfalto y actitud de combate.",
-    imageUrl: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
-    stats: { power: 8, attitude: 9, sound: 7 }
+    bio: "Punk para patos y demás bichos raros. Anastasia General lleva el caos con título propio: energía sin filtro, canciones que aprietan y un SIXPAK que no se digiere fácil.",
+    imageUrl: anastasiaDirecto,
+    ...computeBandStats("anastasia-general"),
   },
   {
     id: "regular-crowd",
     name: "Regular Crowd",
     city: "Barcelona",
     style: "Indie Pop Nostálgico",
-    bio: "Melodías agridulces y ritmos de batería vibrantes. Regular Crowd escribe himnos para bailar llorando en la pista de baile de cualquier club indie.",
-    imageUrl: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&q=80&w=800",
-    stats: { power: 6, attitude: 7, sound: 9 }
+    bio: "Cien por cien actitud, cero por ciento técnica. Regular Crowd no pide disculpas: indie punk murciano que te deja el HURACÁN dentro y las excusas fuera.",
+    imageUrl: regularDirecto,
+    ...computeBandStats("regular-crowd"),
   },
   {
     id: "carajo-baby",
     name: "Carajo Baby",
     city: "Madrid",
     style: "Garaje Rock Sucio",
-    bio: "Tres acordes, distorsión al máximo y letras gritadas al micrófono. Carajo Baby recupera el sonido primitivo del garaje de los sesenta con un toque moderno y macarra.",
-    imageUrl: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=800",
-    stats: { power: 9, attitude: 8, sound: 6 }
+    bio: "Si parpadeas te lo pierdes, y con Carajo Baby no te puedes permitir eso. Indie con las tripas a la vista, canciones que van de la cuchara al engaño sin pedir permiso.",
+    imageUrl: carajoDirecto,
+    ...computeBandStats("carajo-baby"),
   }
 ];
 

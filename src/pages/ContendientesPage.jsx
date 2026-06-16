@@ -115,7 +115,7 @@ export default function ContendientesPage() {
       {/* Carrusel con marco SF2 Character Select */}
       <div className="w-fit max-w-4xl mx-auto mb-16">
         <ArcadeBorder color="rosa" animated={true} title={currentBand.name}>
-          <div className="relative bg-black min-h-[55vh]">
+          <div className="relative bg-black">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentBand.id}
