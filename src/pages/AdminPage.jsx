@@ -29,8 +29,8 @@ export function AdminLoginPage() {
   const [loginError, setLoginError] = useState(null);
   const navigate = useNavigate();
 
-  const adminUser = import.meta.env.VITE_ADMIN_USER || 'ElDemente12';
-  const adminPass = import.meta.env.VITE_ADMIN_PASS || 'VeladaDelaTortillaDePatadasñ1';
+  const adminUser = import.meta.env.ADMIN_USER || 'ElDemente12';
+  const adminPass = import.meta.env.ADMIN_PASS || 'VeladaDelaTortillaDePatadasñ1';
 
   useEffect(() => {
     if (sessionStorage.getItem('admin_logged') === 'true') {
