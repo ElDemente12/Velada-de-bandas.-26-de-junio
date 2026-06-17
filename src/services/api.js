@@ -114,8 +114,8 @@ export function getOrCreateVoterId() {
 // Retrieve secure admin authorization credentials from sessionStorage
 function getAdminHeaders() {
   return {
-    'x-admin-user': sessionStorage.getItem('admin_user') || '',
-    'x-admin-pass': sessionStorage.getItem('admin_pass') || ''
+    'x-admin-user': sessionStorage.getItem('VITE_ADMIN_USER') || '',
+    'x-admin-pass': sessionStorage.getItem('VITE_ADMIN_PASS') || ''
   };
 }
 

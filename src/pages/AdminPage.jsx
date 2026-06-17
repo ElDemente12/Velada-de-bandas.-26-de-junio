@@ -29,8 +29,8 @@ export function AdminLoginPage() {
   const [loginError, setLoginError] = useState(null);
   const navigate = useNavigate();
 
-  const adminUser = import.meta.env.ADMIN_USER || 'ElDemente12';
-  const adminPass = import.meta.env.ADMIN_PASS || 'VeladaDelaTortillaDePatadasñ1';
+  const adminUser = import.meta.env.VITE_ADMIN_USER || 'ElDemente12';
+  const adminPass = import.meta.env.VITE_ADMIN_PASS || 'VeladaDelaTortillaDePatadasñ1';
 
   useEffect(() => {
     if (sessionStorage.getItem('admin_logged') === 'true') {
@@ -44,8 +44,8 @@ export function AdminLoginPage() {
 
     if (username === adminUser && password === adminPass) {
       sessionStorage.setItem('admin_logged', 'true');
-      sessionStorage.setItem('admin_user', username);
-      sessionStorage.setItem('admin_pass', password);
+      sessionStorage.setItem('VITE_ADMIN_USER', username);
+      sessionStorage.setItem('VITE_ADMIN_PASS', password);
       navigate('/administrador');
     } else {
       setLoginError('ACCESO DENEGADO: Credenciales incorrectas');
@@ -172,8 +172,8 @@ export function AdminDashboardPage() {
 
   const handleLogout = () => {
     sessionStorage.removeItem('admin_logged');
-    sessionStorage.removeItem('admin_user');
-    sessionStorage.removeItem('admin_pass');
+    sessionStorage.removeItem('VITE_ADMIN_USER');
+    sessionStorage.removeItem('VITE_ADMIN_PASS');
     navigate('/administrador/login');
   };
 
