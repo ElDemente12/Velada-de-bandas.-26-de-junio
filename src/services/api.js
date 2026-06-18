@@ -56,7 +56,7 @@ const DEFAULT_BANDS = [
   {
     id: "regular-crowd",
     name: "Regular Crowd",
-    city: "Barcelona",
+    city: "Murcia",
     style: "Indie Pop Nostálgico",
     bio: "Cien por cien actitud, cero por ciento técnica. Regular Crowd no pide disculpas: indie punk murciano que te deja el HURACÁN dentro y las excusas fuera.",
     imageUrl: regularDirecto,
